@@ -44,6 +44,7 @@ type HTTPNotifier struct {
 	groupWhitelist *regexp.Regexp
 	groupBlacklist *regexp.Regexp
 	extras         map[string]string
+	headers        map[string]string
 	urlOpen        string
 	urlClose       string
 	methodOpen     string
@@ -201,7 +202,7 @@ func (module *HTTPNotifier) Notify(status *protocol.ConsumerGroupStatus, eventID
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	for header, value := range viper.GetStringMapString("notifier." + module.name + ".headers") {
+	for header, value := range module.extras {
 		req.Header.Set(header, value)
 	}
 
